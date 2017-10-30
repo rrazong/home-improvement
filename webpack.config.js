@@ -8,6 +8,14 @@ const copyWebpackPluginConfig = new copyWebpackPlugin([
   {
     from: 'public/images',
     to: 'images'
+  },
+  {
+    from: 'public/css',
+    to: 'css'
+  },
+  {
+    from: 'public/js',
+    to: 'js'
   }
 ]);
 const htmlWebpackPluginConfig = new htmlWebpackPlugin({
@@ -18,16 +26,16 @@ const htmlWebpackPluginConfig = new htmlWebpackPlugin({
 
 module.exports = {
   entry: __dirname + '/src/entry.js',
-  output: { 
-    path: __dirname + '/build', 
+  output: {
+    path: __dirname + '/build',
     filename: 'bundle.js'
   },
   module: {
     loaders: [
-      { 
+      {
         test: /\.js?$/,
         loader: 'babel-loader',
-        exclude: /node_modules/,        
+        exclude: /node_modules/,
         query: {
           presets: [ 'es2015', 'react' ]
         }

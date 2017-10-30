@@ -16,23 +16,12 @@ class Gallery extends Component {
   constructor(props) {
     super(props);
 
-    const {
-      data,
-      designStyle: designStyles,
-      qualityStandard: qualityStandards,
-    } = props.data;
+    const { list } = props;
 
     this.state = {
-      designStyles,
-      filter: {
-        designStyle: {},
-        qualityStandard: {},
-      },
-      minWidth: (1 + Math.ceil(data.length / NUM_ROWS_IN_GALLERY)) * AVERAGE_IMAGE_WIDTH,
+      minWidth: (1 + Math.ceil(list.length / NUM_ROWS_IN_GALLERY)) * AVERAGE_IMAGE_WIDTH,
       scrollX: 0,
-      qualityStandards,
     };
-
     this.maxScrollPosition = -this.state.minWidth + GALLERY_PAGE_WIDTH;
   }
 
@@ -49,11 +38,11 @@ class Gallery extends Component {
 
   render() {
     const { minWidth, scrollX } = this.state;
-    const { data } = this.props.data;
+    const { list } = this.props;
     const onClickLeft = this.onClick('left');
     const onClickRight = this.onClick('right');
 
-    console.log(data);
+    console.log(list);
 
     return (
       <div className="gallery">
@@ -65,7 +54,7 @@ class Gallery extends Component {
           }}
         >
           {
-            data.map((item) => {
+            list.map((item) => {
               const {
                 _id: id,
                 height,
@@ -110,14 +99,10 @@ class Gallery extends Component {
 }
 
 Gallery.propTypes = {
-  data: PropTypes.shape({
-    data: PropTypes.arrayOf(PropTypes.shape({
-      _id: PropTypes.string.isRequired,
-      imageKey: PropTypes.string.isRequired,
-    })).isRequired,
-    designStyle: PropTypes.array.isRequired,
-    qualityStandard: PropTypes.array.isRequired,
-  }).isRequired,
+  list: PropTypes.arrayOf(PropTypes.shape({
+    _id: PropTypes.string.isRequired,
+    imageKey: PropTypes.string.isRequired,
+  })).isRequired,
 };
 
 export default Gallery;

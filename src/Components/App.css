@@ -104,4 +104,9 @@ ul {
 
 .gallery-gridItem-image {
   display: block;
+  height: 210px;
+}
+
+.filterItem--selected {
+  background-color: yellow;
 }
