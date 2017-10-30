@@ -1,16 +1,14 @@
 'use strict';
 
-import React, { Component } from 'react';
+import React from 'react';
+import Gallery from './Gallery';
+import data from '../data.json';
+import './App.css';
 
-//css
-require('style-loader!./App.css');
-
-class App extends Component {
-  render() {
-    return (
-      <h1>Home Improvement</h1>
-    );
-  }
-}
+const App = () => (
+  <div className="page">
+    <Gallery data={data} />
+  </div>
+);
 
 export default App;
