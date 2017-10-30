@@ -3,13 +3,24 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-const IMAGE_RATIO = 210 / 800;
+const RAW_IMAGE_HEIGHT = 800; // px
+const RAW_IMAGE_WIDTH = 1200; // px
+const SCALED_IMAGE_HEIGHT = 210;
+const IMAGE_RATIO = SCALED_IMAGE_HEIGHT / RAW_IMAGE_HEIGHT;
+const AVERAGE_IMAGE_WIDTH = RAW_IMAGE_WIDTH * IMAGE_RATIO;
+const NUM_ROWS_IN_GALLERY = 3;
+const NUM_IMAGES_PER_ROW = 4;
+const GALLERY_PAGE_WIDTH = NUM_IMAGES_PER_ROW * AVERAGE_IMAGE_WIDTH;
 
 class Gallery extends Component {
   constructor(props) {
     super(props);
 
-    const { designStyle: designStyles, qualityStandard: qualityStandards } = props.data;
+    const {
+      data,
+      designStyle: designStyles,
+      qualityStandard: qualityStandards,
+    } = props.data;
 
     this.state = {
       designStyles,
@@ -17,22 +28,41 @@ class Gallery extends Component {
         designStyle: {},
         qualityStandard: {},
       },
+      minWidth: (1 + Math.ceil(data.length / NUM_ROWS_IN_GALLERY)) * AVERAGE_IMAGE_WIDTH,
+      scrollX: 0,
       qualityStandards,
+    };
+
+    this.maxScrollPosition = -this.state.minWidth + GALLERY_PAGE_WIDTH;
+  }
+
+  onClick(direction = 'right') {
+    const { scrollX } = this.state;
+    return () => {
+      this.setState({
+        scrollX: direction === 'right'
+          ? Math.max(this.maxScrollPosition, scrollX - GALLERY_PAGE_WIDTH)
+          : Math.max(0, scrollX + GALLERY_PAGE_WIDTH),
+      });
     };
   }
 
   render() {
+    const { minWidth, scrollX } = this.state;
     const { data } = this.props.data;
+    const onClickLeft = this.onClick('left');
+    const onClickRight = this.onClick('right');
 
     console.log(data);
-
-    const gridWidth = (1 + Math.ceil(data.length / 3)) * 320;
 
     return (
       <div className="gallery">
         <ul
           className="gallery-grid"
-          style={{ minWidth: gridWidth }}
+          style={{
+            minWidth,
+            transform: `translateX(${scrollX}px)`,
+          }}
         >
           {
             data.map((item) => {
@@ -45,11 +75,8 @@ class Gallery extends Component {
               const imageUrl = `/${imageKey}`;
 
               return (
-                <li
-                  className="gallery-gridItem"
-                  key={id}
-                >
-                  <div>
+                <li key={id}>
+                  <div className="gallery-gridItem">
                     <img
                       alt={`Gallery item ${id}`}
                       height={height * IMAGE_RATIO}
@@ -66,11 +93,15 @@ class Gallery extends Component {
         <div className="gallery-bumper gallery-bumper--left">
           <button
             className="gallery-nav gallery-nav--left"
+            disabled={scrollX === 0}
+            onClick={onClickLeft}
           />
         </div>
         <div className="gallery-bumper gallery-bumper--right">
           <button
             className="gallery-nav gallery-nav--right"
+            disabled={scrollX <= this.maxScrollPosition}
+            onClick={onClickRight}
           />
         </div>
       </div>
