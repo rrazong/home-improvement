@@ -1,5 +1,19 @@
 # Home Improvement coding challenge
 
+## Firebase deployment
+
+1. In your Firebase console, create a project named "Home Improvement"
+2. Initialize Firebase
+* % npm run firebase-init
+* Select "Hosting: Configure and deploy Firebase Hosting sites"
+* Select the Firebase project you created, "Home Improvement"
+* What do you want to use as your public directory? Answer: "build"
+* Configure as a single-page app (rewrite all urls to /index.html)? Answer: "y"
+* File build/index.html already exists. Overwrite? Answer: "N"
+3. Deploy to Firebase
+* % npm run deploy
+* And then open your browser to the given "Hosting URL", for example "https://home-improvement-5cc86.firebaseapp.com/"
+
 ## Environment setup
 
 Note:
