@@ -74,10 +74,14 @@ class FilterItem extends Component {
     const { className, filter } = this.props;
     return (
       <li>
-        <a className={className}>
-          <button onClick={this.onClick} >
-            {filter.label}
-          </button>
+        <a
+          className={className}
+          onClick={this.onClick}
+          onKeyUp={this.onClick}
+          role="button"
+          tabIndex={0}
+        >
+          {filter.label}
         </a>
       </li>
     );

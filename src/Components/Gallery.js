@@ -25,6 +25,12 @@ class Gallery extends Component {
     this.maxScrollPosition = -this.state.minWidth + GALLERY_PAGE_WIDTH;
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (this.props.list.length !== nextProps.list.length) {
+      this.setState({ scrollX: 0 });
+    }
+  }
+
   onClick(direction = 'right') {
     const { scrollX } = this.state;
     return () => {
@@ -41,8 +47,6 @@ class Gallery extends Component {
     const { list } = this.props;
     const onClickLeft = this.onClick('left');
     const onClickRight = this.onClick('right');
-
-    console.log(list);
 
     return (
       <div className="gallery">
